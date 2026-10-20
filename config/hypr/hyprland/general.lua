@@ -69,7 +69,7 @@ hl.config({
         workspace_swipe_create_new = true
     },
     input = {
-        kb_layout = "us",
+        kb_layout = "de",
         numlock_by_default = true,
         repeat_delay = 250,
         repeat_rate = 35,

@@ -11,7 +11,7 @@ Rectangle {
     implicitWidth: 38
     implicitHeight: 22
     radius: Theme.r(height / 2)
-    color: checked ? Theme.active : "transparent"
+    color: checked ? Theme.active : Qt.alpha(Theme.active, 0)
     border.width: checked ? 0 : 1
     border.color: Theme.faint
     Behavior on color { ColorAnimation { duration: 180 } }

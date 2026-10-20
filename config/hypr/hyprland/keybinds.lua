@@ -8,9 +8,8 @@ local hyprScripts = "$HOME/.config/hypr/hyprland/scripts"
 local qsIpcCall = "qs -c $qsConfig ipc call"
 
 --##! Shell
--- Launcher is fuzzel (themed via ~/.config/quickshell/nothing/bin/fuzzel).
--- Launcher, clipboard and emoji go through launcher.sh: vicinae when it's
--- running, the pill launcher / fuzzel otherwise.
+-- Launcher is the pill's own launcher (tap Super).
+-- Clipboard and emoji go through launcher.sh: fuzzel.
 local launcher = "$HOME/.config/quickshell/nothing/scripts/launcher.sh"
 hl.bind("SUPER + SUPER_L", hl.dsp.exec_cmd(launcher .. " apps"), { description = "Shell: App launcher" })
 hl.bind("SUPER + SUPER_R", hl.dsp.exec_cmd(launcher .. " apps"))
@@ -18,9 +17,12 @@ hl.bind("SUPER + SUPER_R", hl.dsp.exec_cmd(launcher .. " apps"))
 hl.bind("SUPER + N", hl.dsp.global("quickshell:sidebarRightToggle"), { description = "Shell: Quick settings" })
 hl.bind("SUPER + A", hl.dsp.global("quickshell:calendarToggle"), { description = "Shell: Calendar" })
 hl.bind("SUPER + M", hl.dsp.global("quickshell:mediaControlsToggle"), { description = "Shell: Media controls" })
+hl.bind("SUPER + G", hl.dsp.global("quickshell:agentsToggle"), { description = "Shell: OpenCode agents" })
+hl.bind("SUPER + H", hl.dsp.global("quickshell:menuToggle"), { description = "Shell: Island menu (all functions)" })
 hl.bind("CTRL + ALT + Delete", hl.dsp.global("quickshell:sessionToggle"), { description = "Shell: Session menu" })
 hl.bind("SUPER + J", hl.dsp.global("quickshell:barToggle"), { description = "Shell: Toggle bar" })
-hl.bind("SUPER + Slash", hl.dsp.global("quickshell:cheatsheetToggle"), { description = "Shell: Keybind cheat sheet" })
+-- On a German layout the "/" key is Shift+7, so the cheat sheet sits on "-" (Minus) instead.
+hl.bind("SUPER + Minus", hl.dsp.global("quickshell:cheatsheetToggle"), { description = "Shell: Keybind cheat sheet" })
 
 hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(qsIpcCall .. " brightness increment || brightnessctl s 5%+"),
     { locked = true, repeating = true })
@@ -91,7 +93,7 @@ local function zoomfunction(value)
         hl.config({ cursor = { zoom_factor = zoomvalue + value } })
     end
 end
-hl.bind("SUPER + Minus", function() zoomfunction(-0.3) end, { repeating = true, description = "Screen: Zoom out" })
+hl.bind("SUPER + SHIFT + Minus", function() zoomfunction(-0.3) end, { repeating = true, description = "Screen: Zoom out" })
 hl.bind("SUPER + Equal", function() zoomfunction(0.3) end, { repeating = true, description = "Screen: Zoom in" })
 
 --# Zoom with keypad

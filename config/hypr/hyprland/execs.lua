@@ -1,8 +1,6 @@
 hl.on("hyprland.start", function()
     -- Shell: bar, wallpaper, notifications, polkit
     hl.exec_cmd("qs -c $qsConfig")
-    -- Launcher (Raycast-style). Only in this session; skipped if not installed.
-    hl.exec_cmd("command -v vicinae >/dev/null && vicinae server")
 
     -- Core
     hl.exec_cmd("gnome-keyring-daemon --start --components=secrets")

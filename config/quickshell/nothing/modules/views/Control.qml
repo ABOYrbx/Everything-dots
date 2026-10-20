@@ -137,7 +137,7 @@ Column {
                     width: chip.implicitWidth + 22
                     height: 26
                     radius: Theme.r(13)
-                    color: on ? Theme.fg : "transparent"
+                    color: on ? Theme.fg : Qt.alpha(Theme.fg, 0)
                     border.width: on ? 0 : 1
                     border.color: Theme.faint
                     Behavior on color { ColorAnimation { duration: 180 } }

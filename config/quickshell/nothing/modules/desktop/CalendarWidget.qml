@@ -20,7 +20,7 @@ Glass {
         x: 20
         y: 20
         spacing: 10
-        Heading { text: Qt.formatDateTime(time.date, "MMMM"); font.pixelSize: 30 }
+        Heading { text: Dates.month(time.date); font.pixelSize: 30 }
         Grid {
             columns: 7
             columnSpacing: 2

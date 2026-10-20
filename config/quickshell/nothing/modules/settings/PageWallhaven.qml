@@ -17,7 +17,7 @@ Page {
         width: ct.implicitWidth + 24
         height: 30
         radius: Theme.r(height / 2)
-        color: on ? Theme.active : (cm.containsMouse ? Theme.raised : "transparent")
+        color: on ? Theme.active : (cm.containsMouse ? Theme.raised : Qt.alpha(Theme.raised, 0))
         border.width: on ? 0 : 1
         border.color: Theme.faint
         Caption { id: ct; anchors.centerIn: parent; text: c.text; color: c.on ? Theme.activeFg : Theme.fg; font.pixelSize: 11 }

@@ -56,7 +56,7 @@ Column {
         width: ct.implicitWidth + 24
         height: 28
         radius: Theme.r(height / 2)
-        color: on ? Theme.active : "transparent"
+        color: on ? Theme.active : Qt.alpha(Theme.active, 0)
         border.width: on ? 0 : 1
         border.color: Theme.faint
         Caption { id: ct; anchors.centerIn: parent; text: c.text; color: c.on ? Theme.activeFg : Theme.fg }

@@ -13,11 +13,22 @@ Rectangle {
     implicitWidth: size
     implicitHeight: size
     radius: Theme.r(size / 2)
-    color: active ? Theme.active : (mouse.containsMouse ? Theme.raised : "transparent")
+    color: "transparent"
     border.width: active ? 0 : 1
     border.color: Theme.faint
 
-    Behavior on color { ColorAnimation { duration: 180 } }
+    // The fill is its own layer and only its alpha moves. Animating the
+    // colour of the button itself would fade it through black.
+    Rectangle {
+        anchors.fill: parent
+        anchors.margins: root.border.width
+        radius: root.radius
+        color: root.active ? Theme.active : Theme.raised
+        opacity: root.active ? 1 : (mouse.containsMouse ? 1 : 0)
+        Behavior on opacity {
+            NumberAnimation { duration: 180; easing.type: Easing.OutCubic }
+        }
+    }
 
     Icon {
         anchors.centerIn: parent

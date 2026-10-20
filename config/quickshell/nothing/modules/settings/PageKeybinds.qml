@@ -297,7 +297,7 @@ Page {
                                 width: ar.width + 20
                                 height: 36
                                 radius: Theme.r(height / 2)
-                                color: on ? Theme.fg : (am.containsMouse ? Theme.raised : "transparent")
+                                color: on ? Theme.fg : (am.containsMouse ? Theme.raised : Qt.alpha(Theme.raised, 0))
                                 border.width: on ? 0 : 1
                                 border.color: Theme.faint
                                 Row {
@@ -442,7 +442,7 @@ Page {
 
                     Rectangle {
                         anchors.fill: parent
-                        color: rm.containsMouse ? Qt.alpha(Theme.raised, 0.6) : "transparent"
+                        color: rm.containsMouse ? Qt.alpha(Theme.raised, 0.6) : Qt.alpha(Theme.raised, 0)
                     }
                     Column {
                         x: 22
@@ -524,7 +524,7 @@ Page {
         width: ct.implicitWidth + 24
         height: 30
         radius: Theme.r(15)
-        color: on ? Theme.fg : (cm.containsMouse ? Theme.raised : "transparent")
+        color: on ? Theme.fg : (cm.containsMouse ? Theme.raised : Qt.alpha(Theme.raised, 0))
         border.width: on ? 0 : 1
         border.color: Theme.faint
         Behavior on color { ColorAnimation { duration: 120 } }

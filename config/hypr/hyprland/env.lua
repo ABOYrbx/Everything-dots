@@ -4,7 +4,8 @@ local shell_dir = home_dir .. "/.config/quickshell/nothing"
 -- Wayland
 hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 hl.env("QT_QPA_PLATFORM", "wayland;xcb")
-hl.env("QT_QPA_PLATFORMTHEME", "kde")
+hl.env("QT_QPA_PLATFORMTHEME", "gtk3")
+hl.env("GTK_THEME", "Adwaita:dark")
 hl.env("XDG_MENU_PREFIX", "plasma-")
 
 -- Applications

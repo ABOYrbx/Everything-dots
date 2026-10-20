@@ -14,7 +14,7 @@ Rectangle {
     width: row.width + 30
     height: 34
     radius: Theme.r(17)
-    color: accent ? Theme.active : (m.containsMouse ? Theme.raised : "transparent")
+    color: accent ? Theme.active : (m.containsMouse ? Theme.raised : Qt.alpha(Theme.raised, 0))
     border.width: accent ? 0 : 1
     border.color: Theme.faint
     Behavior on color { ColorAnimation { duration: 150 } }

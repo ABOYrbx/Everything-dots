@@ -55,9 +55,6 @@ hl.workspace_rule({ workspace = "special:special", gaps_out = 30 })
 hl.layer_rule({ match = { namespace = "nothing:bar" }, blur = true })
 hl.layer_rule({ match = { namespace = "nothing:bar" }, ignore_alpha = 0.2 })
 hl.layer_rule({ match = { namespace = "nothing:bar" }, blur_popups = true })
-hl.layer_rule({ match = { namespace = "vicinae" }, blur = true })
-hl.layer_rule({ match = { namespace = "vicinae" }, ignore_alpha = 0 })
-hl.layer_rule({ match = { namespace = "vicinae" }, no_anim = true })
 hl.layer_rule({ match = { namespace = "launcher" }, blur = true })
 hl.layer_rule({ match = { namespace = "launcher" }, ignore_alpha = 0.2 })
 
@@ -75,3 +72,7 @@ hl.window_rule({ match = { title = "^(Nothing Settings)$" }, center = true })
 -- Desktop widgets: frosted like the pill
 hl.layer_rule({ match = { namespace = "nothing:widgets" }, blur = true })
 hl.layer_rule({ match = { namespace = "nothing:widgets" }, ignore_alpha = 0.2 })
+
+-- hyprwhsp mic overlay: frosted like the pill
+hl.layer_rule({ match = { namespace = "mic-osd" }, blur = true })
+hl.layer_rule({ match = { namespace = "mic-osd" }, ignore_alpha = 0.2 })

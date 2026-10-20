@@ -86,7 +86,6 @@ FLEX_PKGS=(
     "matugen|matugen-bin"
     "ttf-material-symbols-variable|ttf-material-symbols-variable-git"
     "bibata-cursor-theme|bibata-cursor-theme-bin"
-    "vicinae|vicinae-bin"
 )
 
 aur_helper() {
@@ -225,20 +224,6 @@ wallpaper() {
     fi
 }
 
-# Vicinae reads ~/.config/vicinae/settings.json. We only create it (importing
-# our settings) when you don't have one - an existing vicinae setup is kept.
-vicinae_config() {
-    local f="$HOME/.config/vicinae/settings.json"
-    local ours="$HOME/.config/quickshell/nothing/apps/vicinae/settings.json"
-    if [[ ! -e "$f" ]]; then
-        mkdir -p "$(dirname "$f")"
-        printf '{\n\t// Everything-dots defaults; add your own settings below the import.\n\t"imports": ["%s"]\n}\n' "$ours" > "$f"
-        note "created ~/.config/vicinae/settings.json (imports the Everything-dots defaults)"
-    elif ! grep -q "apps/vicinae/settings.json" "$f"; then
-        note "kept your ~/.config/vicinae/settings.json - add \"$ours\" to its \"imports\" for the themed look"
-    fi
-}
-
 first_run() {
     say "Generating theme"
     local shell="$HOME/.config/quickshell/nothing"
@@ -294,7 +279,6 @@ install_fonts
 link_configs
 enable_services
 wallpaper
-vicinae_config
 first_run
 [[ $NO_UPDATE == 1 ]] || autoupdate
 

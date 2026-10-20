@@ -6,7 +6,7 @@ import qs.components
 
 // App launcher inside the island. Always loaded, so icons are already
 // decoded when it opens.
-//   empty query  -> grid, most used first
+//   empty query  -> grid, favorites then recently used
 //   text         -> ranked list (+ calculator / command / web search)
 //   "= expr"     -> qalculate (units, currency, …)   "> cmd" -> run command
 Column {
@@ -138,7 +138,7 @@ Column {
         radius: Theme.r(height / 2)
         color: Theme.card
         border.width: 1
-        border.color: field.activeFocus ? Qt.alpha(Theme.fg, 0.2) : "transparent"
+        border.color: field.activeFocus ? Qt.alpha(Theme.fg, 0.2) : Qt.alpha(Theme.fg, 0)
 
         Icon {
             x: 18
@@ -182,7 +182,7 @@ Column {
             anchors.right: parent.right
             anchors.rightMargin: 20
             anchors.verticalCenter: parent.verticalCenter
-            text: root.grid ? Apps.all.length + " apps" : (root.results.length ? root.results.length + " results" : "")
+            text: root.grid ? Apps.byUse.length + " apps" : (root.results.length ? root.results.length + " results" : "")
         }
     }
 
@@ -214,7 +214,7 @@ Column {
                 anchors.fill: parent
                 anchors.margins: 4
                 radius: Theme.radius
-                color: cell.current ? Theme.card : (m.containsMouse ? Qt.alpha(Theme.card, 0.6) : "transparent")
+                color: cell.current ? Theme.card : (m.containsMouse ? Qt.alpha(Theme.card, 0.6) : Qt.alpha(Theme.card, 0))
                 border.width: cell.current ? 1 : 0
                 border.color: Qt.alpha(Theme.fg, 0.25)
             }
@@ -275,7 +275,7 @@ Column {
                 anchors.topMargin: 2
                 anchors.bottomMargin: 2
                 radius: Theme.radius
-                color: row.current ? Theme.card : (rm.containsMouse ? Qt.alpha(Theme.card, 0.5) : "transparent")
+                color: row.current ? Theme.card : (rm.containsMouse ? Qt.alpha(Theme.card, 0.5) : Qt.alpha(Theme.card, 0))
             }
             Item {
                 id: lead
@@ -339,7 +339,7 @@ Column {
                         width: at.implicitWidth + 20
                         height: 26
                         radius: Theme.r(13)
-                        color: am.containsMouse ? Theme.raised : "transparent"
+                        color: am.containsMouse ? Theme.raised : Qt.alpha(Theme.raised, 0)
                         border.width: 1
                         border.color: Theme.faint
                         Caption { id: at; anchors.centerIn: parent; text: parent.modelData.name; color: Theme.fg }

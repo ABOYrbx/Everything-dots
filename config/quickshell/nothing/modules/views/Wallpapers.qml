@@ -25,7 +25,7 @@ Column {
             width: whl.implicitWidth + 24
             height: 30
             radius: Theme.r(height / 2)
-            color: whm.containsMouse ? Theme.raised : "transparent"
+            color: whm.containsMouse ? Theme.raised : Qt.alpha(Theme.raised, 0)
             border.width: 1
             border.color: Theme.faint
             Caption { id: whl; anchors.centerIn: parent; text: "Browse Wallhaven"; color: Theme.fg }

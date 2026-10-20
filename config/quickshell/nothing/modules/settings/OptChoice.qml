@@ -31,7 +31,7 @@ OptRow {
                     width: t.implicitWidth + 24
                     height: 26
                     radius: Theme.r(13)
-                    color: on ? Theme.fg : (m.containsMouse ? Theme.raised : "transparent")
+                    color: on ? Theme.fg : (m.containsMouse ? Theme.raised : Qt.alpha(Theme.raised, 0))
                     Behavior on color { ColorAnimation { duration: 150 } }
                     Caption {
                         id: t

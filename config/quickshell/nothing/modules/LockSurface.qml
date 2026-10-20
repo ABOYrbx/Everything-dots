@@ -91,7 +91,7 @@ Item {
             }
             Heading {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: Qt.formatDateTime(time.date, "dddd, d MMMM")
+                text: Dates.longDate(time.date)
                 font.pixelSize: 54 * root.s
             }
         }

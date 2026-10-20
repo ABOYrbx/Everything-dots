@@ -30,11 +30,11 @@ Column {
             anchors.verticalCenter: parent.verticalCenter
             spacing: 4
             Caption {
-                text: Qt.formatDateTime(time.date, "dddd")
+                text: Dates.weekday(time.date)
                 color: Theme.accent
             }
             Heading {
-                text: Qt.formatDateTime(time.date, "d MMMM")
+                text: Dates.dayMonth(time.date)
                 font.pixelSize: 30
             }
             Caption {
@@ -58,7 +58,7 @@ Column {
             width: grid.width
             Heading {
                 width: parent.width - 40
-                text: Qt.formatDateTime(root.shown, "MMMM yyyy")
+                text: Dates.monthYear(root.shown)
                 font.pixelSize: 20
             }
             Caption {

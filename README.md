@@ -29,7 +29,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/SambuddhaRoy/Everything-dots
 ```
 
 Then log into the Hyprland session. A short welcome tour walks you through
-wallpaper, look, colour and weather, and `Super + /` shows every key.
+wallpaper, look, colour and weather, and `Super + -` shows every key.
 
 <details>
 <summary>What the installer does</summary>
@@ -81,15 +81,17 @@ One island at the top of the screen that grows into whatever you open.
 | | |
 |:---:|:---:|
 | <img src="assets/launcher.webp" alt="Launcher"> | <img src="assets/quick-settings.webp" alt="Quick settings"> |
-| **Launcher.** [vicinae](https://vicinae.com) (apps, clipboard, emoji, files, extensions), themed from the wallpaper. If vicinae isn't running, the pill's own launcher (shown) takes over. | **Quick settings.** Nothing-style tiles, pill sliders, palette, capture, power. |
+| **Launcher.** The pill's own launcher, themed from the wallpaper. | **Quick settings.** Nothing-style tiles, pill sliders, palette, capture, power. |
 | <img src="assets/weather.webp" alt="Weather"> | <img src="assets/calendar.webp" alt="Calendar"> |
 | **Weather.** Open-Meteo hourly and 7-day, animated dot-matrix glyphs. | **Calendar.** Dot-matrix clock, weekends in the accent colour. |
 | <img src="assets/capture.webp" alt="Capture"> | <img src="assets/wallpapers.webp" alt="Wallpapers"> |
 | **Capture.** Screenshots of an area, window or screen (with a delay), and recording with system audio. | **Wallpapers.** From your folder, or browse Wallhaven straight from Settings. |
 
 The pill also holds:
+- **Menu:** rest the pointer on the pill and every function shows up in one grid - clock, weather, now playing, apps, Wi-Fi, Bluetooth, wallpaper, capture, OpenCode agents, quick settings, power, settings - each tile with its live value. Clicking a tile opens it. `Super+H` opens it too.
 - **Media:** tinted by the cover art, with a live dot-matrix waveform and a seekable dot progress bar.
 - **Networks:** Wi-Fi and Bluetooth, with tray menus inside the pill.
+- **OpenCode agents:** a small pill next to the island with the live OpenCode sessions - how many agents run, how many tokens they used, how long. A small OpenCode plugin feeds the shell; `Super+G` opens the list.
 - **The rest:** polkit password prompts, notifications, and volume and brightness popups.
 
 ## Lock screen, widgets, keys
@@ -97,7 +99,7 @@ The pill also holds:
 | | |
 |:---:|:---:|
 | <img src="assets/lock.webp" alt="Lock screen"> | <img src="assets/cheatsheet.webp" alt="Keybind cheat sheet"> |
-| **Lock screen.** Dot-matrix clock, glass cards, PAM login. hyprlock is the fallback. | **`Super + /`** shows every bind, live from Hyprland. Edit them in Settings. |
+| **Lock screen.** Dot-matrix clock, glass cards, PAM login. hyprlock is the fallback. | **`Super + -`** shows every bind, live from Hyprland. Edit them in Settings. |
 
 Desktop widgets: clock, weather, now playing, calendar, a battery ring (the
 dots chase while charging), system meters and a sticky note. All of them can be dragged.
@@ -137,11 +139,12 @@ dots chase while charging), system meters and a sticky note. All of them can be 
 
 | Keys | |
 |---|---|
-| `Super` (tap) | launcher (vicinae) |
+| `Super` (tap) | launcher |
 | `Super + V` · `Super + .` | clipboard history · emoji |
-| `Super + /` | all keys |
+| `Super + -` | all keys |
 | `Super + I` | settings |
 | `Super + N` · `Super + M` · `Super + A` | quick settings · media · calendar |
+| `Super + G` | OpenCode agents |
 | `Super + Print` | capture panel |
 | `Super + Shift + S` | screenshot an area (saved and copied) |
 | `Super + Shift + R` | record an area (press again to stop) |
@@ -154,6 +157,7 @@ dots chase while charging), system meters and a sticky note. All of them can be 
 ```
 config/hypr/                 Hyprland (Lua config)
 config/quickshell/nothing/   the shell. Its README covers files, IPC and options
+config/opencode/plugins/     OpenCode plugin: live session state for the pill
 install.sh  update.sh        installer and auto-updater
 assets/                      screenshots
 ```

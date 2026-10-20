@@ -231,7 +231,7 @@ Item {
                     width: pl.implicitWidth + 22
                     height: 28
                     radius: Theme.r(height / 2)
-                    color: on ? Theme.active : "transparent"
+                    color: on ? Theme.active : Qt.alpha(Theme.active, 0)
                     border.width: on ? 0 : 1
                     border.color: Theme.faint
                     Caption { id: pl; anchors.centerIn: parent; text: parent.modelData.identity; color: parent.on ? Theme.activeFg : Theme.fg }

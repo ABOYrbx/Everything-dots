@@ -40,7 +40,7 @@ Column {
         color: root.ink
     }
     Heading {
-        text: Qt.formatDateTime(time.date, "dddd, d MMMM")
+        text: Dates.longDate(time.date)
         font.pixelSize: 46
         color: root.ink
     }

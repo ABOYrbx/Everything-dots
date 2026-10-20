@@ -17,7 +17,3 @@ output_path = '~/.config/hypr/hyprlock/colors.conf'
 [templates.fuzzel]
 input_path = '~/.config/quickshell/nothing/matugen/templates/fuzzel.ini'
 output_path = '~/.local/state/nothing/fuzzel-colors.ini'
-
-[templates.vicinae]
-input_path = '~/.config/quickshell/nothing/matugen/templates/vicinae.toml'
-output_path = '~/.local/share/vicinae/themes/nothing.toml'

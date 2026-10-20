@@ -18,18 +18,27 @@ hypr_sig() {
     return 1
 }
 
+# Pull updates from upstream, push goes to the fork (remote.pushDefault).
+# Both remotes are fetched: upstream carries the new commits, origin is the
+# fork this repo pushes to.
+UPSTREAM_REF="upstream/main"
 git fetch --quiet origin || exit 0
-[[ "$(git rev-parse @)" == "$(git rev-parse '@{u}')" ]] && exit 0
+git fetch --quiet upstream || exit 0
+git rev-parse --verify --quiet "$UPSTREAM_REF" >/dev/null || exit 0
+[[ "$(git rev-parse @)" == "$(git rev-parse "$UPSTREAM_REF")" ]] && exit 0
 if ! git diff --quiet || ! git diff --cached --quiet; then
     notify "Update available" "Skipped: you have local changes in ${DOTS/#$HOME/~}"
     exit 0
 fi
 before=$(git rev-parse --short @)
-git pull --ff-only --quiet || { notify "Update failed" "git pull couldn't fast-forward"; exit 1; }
+# Fast-forward when possible, merge when this branch has commits of its own.
+git merge --ff-only --quiet "$UPSTREAM_REF" 2>/dev/null \
+    || git merge --no-edit --quiet "$UPSTREAM_REF" \
+    || { notify "Update failed" "couldn't merge ${UPSTREAM_REF}"; exit 1; }
 "$DOTS/install.sh" --link-only --quiet
 
 if git diff --name-only "$before" @ | grep -qx install.sh; then
-    notify "Everything-dots updated" "The installer changed - run ~/Everything-dots/install.sh to pick up new packages"
+    notify "Everything-dots updated" "The installer changed - run ~/Projekte/Everything-dots/install.sh to pick up new packages"
 fi
 
 if sig=$(hypr_sig); then

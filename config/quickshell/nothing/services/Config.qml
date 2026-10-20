@@ -22,6 +22,18 @@ Singleton {
             opacity: 0.72,      // glass opacity (0.3 - 1)
             border: true
         },
+        agents: {
+            pill: true,      // the small pill right of the island
+            count: true,     // how many agents are running
+            tokens: true,    // tokens used by the tracked sessions
+            elapsed: true,   // how long the longest run has been going
+            onlyRunning: false // list only the running sessions
+        },
+        menu: {
+            click: true,     // clicking the glass around the chips opens the menu
+            hover: true,     // resting the pointer on the island opens it too
+            hoverDelay: 450  // how long the pointer has to stay still (ms)
+        },
         look: {
             bloom: true,        // glow on dot-matrix elements
             bloomStrength: 0.9, // 0.2 - 1
@@ -60,7 +72,11 @@ Singleton {
             weather: true,
             media: true
         },
-        idle: { lock: 5, screenOff: 10, suspend: 15 } // minutes, 0 = never
+        idle: { lock: 5, screenOff: 10, suspend: 15 }, // minutes, 0 = never
+        launcher: {
+            favorites: [],      // pinned first in the opening grid, in this order
+            hidden: []          // desktop names/ids never shown (also excluded from search)
+        }
     })
 
     property var data: defaults

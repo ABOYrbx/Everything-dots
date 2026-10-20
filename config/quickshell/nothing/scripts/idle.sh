@@ -12,7 +12,7 @@ cat <<'HEAD'
 general {
     lock_cmd = qs -c nothing ipc call lock lock || (pidof hyprlock || hyprlock)
     before_sleep_cmd = loginctl lock-session
-    after_sleep_cmd = hyprctl dispatch 'hl.dsp.dpms({ action = "enable" })'
+    after_sleep_cmd = hyprctl dispatch 'hl.dsp.dpms({ action = "enable" })'; sleep 2; hyprctl reload config-only
     inhibit_sleep = 3
 }
 HEAD

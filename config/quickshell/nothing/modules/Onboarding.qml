@@ -45,8 +45,8 @@ Scope {
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
             color: "transparent"
 
-            property int step: 0
-            readonly property var steps: ["Welcome", "Wallpaper", "Look", "Colour", "Weather", "Keys", "Done"]
+            property int step: 6
+            readonly property var steps: ["Welcome", "Wallpaper", "Look", "Colour", "Weather", "Keys", "Dictation", "Done"]
             readonly property real s: Math.max(0.6, Math.min(width / 1920, height / 1080))
 
             function next() { if (step < steps.length - 1) step++; else root.finish(); }
@@ -130,6 +130,35 @@ Scope {
                         }
                         MouseArea { id: cm; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: ch.clicked() }
                     }
+                    // A small round-ish option, for the many choices of a
+                    // single setting (modes, languages).
+                    component Pick: Rectangle {
+                        id: pk
+                        property string text
+                        property bool on: false
+                        signal clicked
+                        TextMetrics {
+                            id: tm
+                            font.family: Theme.mono
+                            font.pixelSize: 12 * win.s
+                            text: pk.text
+                        }
+                        width: tm.width + 30 * win.s
+                        height: 32 * win.s
+                        radius: Theme.r(height / 2)
+                        color: on ? Theme.active : (pm.containsMouse ? Theme.raised : Theme.card)
+                        border.width: on ? 0 : 1
+                        border.color: Theme.faint
+                        Behavior on color { ColorAnimation { duration: 150 } }
+                        Label {
+                            anchors.centerIn: parent
+                            text: pk.text
+                            font.family: Theme.mono
+                            font.pixelSize: 12 * win.s
+                            color: pk.on ? Theme.activeFg : Theme.fg
+                        }
+                        MouseArea { id: pm; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: pk.clicked() }
+                    }
 
                     // 0 Welcome
                     Pg {
@@ -139,7 +168,7 @@ Scope {
                             spacing: 26 * win.s
                             DotText { text: "HELLO"; dot: 11 * win.s; gap: 4 * win.s; offOpacity: 0.07 }
                             Big { text: "Welcome to Everything." }
-                            Body { text: "A quiet Hyprland desktop built around one pill at the top of the screen. It grows into whatever you open: launcher, quick settings, media, weather, capture. Let's set it up - it takes a minute." }
+                            Body { text: "A quiet Hyprland desktop built around one pill at the top of the screen. It grows into whatever you open: launcher, quick settings, media, weather, capture, dictation. Let's set it up - it takes a minute." }
                         }
                     }
 
@@ -294,7 +323,7 @@ Scope {
                                 rowSpacing: 14 * win.s
                                 Repeater {
                                     model: [
-                                        [["Super"], "App launcher (tap)"], [["Super", "/"], "All keys"],
+                                        [["Super"], "App launcher (tap)"], [["Super", "-"], "All keys"],
                                         [["Super", "I"], "Settings"], [["Super", "N"], "Quick settings"],
                                         [["Super", "Print"], "Screenshot / record"], [["Super", "Return"], "Terminal"],
                                         [["Super", "Q"], "Close window"], [["Super", "L"], "Lock"]
@@ -324,9 +353,120 @@ Scope {
                         }
                     }
 
-                    // 6 Done
+                    // 6 Dictation
                     Pg {
                         index: 6
+                        // The shortcut as separate key chips: "CTRL+SPACE".
+                        readonly property var chips: (DictationConfig.primary ?? "")
+                            .split("+").filter(s => s !== "")
+
+                        onVisibleChanged: if (visible) DictationConfig.check()
+
+                        Column {
+                            width: parent.width
+                            spacing: 14 * win.s
+
+                            Big { text: "Speak, don't type." }
+                            Body { text: "hyprwhspr listens and types into the window that has the focus. While it records, the pill grows into a dot-matrix level meter." }
+
+                            // Is it there at all?
+                            Row {
+                                spacing: 9 * win.s
+                                visible: DictationConfig.installed
+                                Rectangle {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    width: 7 * win.s
+                                    height: 7 * win.s
+                                    radius: Theme.r(3.5 * win.s)
+                                    color: DictationConfig.running ? Theme.accent : Theme.faint
+                                }
+                                Label {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    text: DictationConfig.running
+                                        ? "hyprwhspr is running"
+                                        : "hyprwhspr is installed, but not running"
+                                    font.pixelSize: 12 * win.s
+                                    color: Theme.dim
+                                }
+                            }
+                            Caption {
+                                visible: !DictationConfig.installed
+                                text: "hyprwhspr is not installed. Install it with: yay -S hyprwhspr"
+                                color: Theme.error
+                                font.pixelSize: 12 * win.s
+                            }
+
+                            // The shortcut that starts it
+                            Row {
+                                spacing: 10 * win.s
+                                Label {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    text: "Start dictating"
+                                    font.pixelSize: 13 * win.s
+                                    color: Theme.dim
+                                }
+                                Repeater {
+                                    model: chips
+                                    Rectangle {
+                                        required property string modelData
+                                        width: kc.implicitWidth + 16 * win.s
+                                        height: 30 * win.s
+                                        radius: Theme.r(8 * win.s)
+                                        color: Theme.raised
+                                        border.width: 1
+                                        border.color: Theme.faint
+                                        Caption { id: kc; anchors.centerIn: parent; text: parent.modelData; color: Theme.fg; font.pixelSize: 11 * win.s }
+                                    }
+                                }
+                            }
+
+                            // How the key behaves
+                            Row {
+                                spacing: 8 * win.s
+                                Repeater {
+                                    model: DictationConfig.modes
+                                    Pick {
+                                        required property var modelData
+                                        text: modelData.label
+                                        on: DictationConfig.mode === modelData.value
+                                        onClicked: {
+                                            DictationConfig.mode = modelData.value;
+                                            DictationConfig.apply();
+                                        }
+                                    }
+                                }
+                            }
+
+                            // The language the model listens for
+                            Row {
+                                spacing: 8 * win.s
+                                Repeater {
+                                    model: DictationConfig.languages.filter(l => ["de", "en", "fr", "es"].includes(l.value))
+                                    Pick {
+                                        required property var modelData
+                                        text: modelData.label
+                                        on: DictationConfig.language === modelData.value
+                                        onClicked: {
+                                            DictationConfig.language = modelData.value;
+                                            DictationConfig.apply();
+                                        }
+                                    }
+                                }
+                            }
+
+                            Caption {
+                                text: DictationConfig.restarting
+                                    ? "Saved. hyprwhspr restarts and picks the new setting up."
+                                    : "More languages, a second shortcut and the overlay live in Settings › Dictation."
+                                color: DictationConfig.restarting ? Theme.accent : Theme.dim
+                                font.pixelSize: 11 * win.s
+                            }
+                        }
+                    }
+
+                    // 7 Done
+                    Pg {
+                        index: 7
                         Column {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: 24 * win.s

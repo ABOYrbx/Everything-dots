@@ -83,7 +83,7 @@ Page {
         }
         OptRow {
             label: "Keybind cheat sheet"
-            sub: "Super + /"
+            sub: "Super + -"
             OptButton { text: "Open"; icon: "keyboard"; onClicked: Quickshell.execDetached(["qs", "-c", "nothing", "ipc", "call", "cheatsheet", "toggle"]) }
         }
         OptRow {

@@ -9,9 +9,10 @@ DotMatrix {
     property int columns: 16
     property int lines: 5
     property real level: 1 // scale
+    property var source: Visualizer.levels // values to draw (media by default)
 
     readonly property var values: {
-        const src = Visualizer.levels, out = [];
+        const src = root.source, out = [];
         for (let c = 0; c < columns; c++) {
             const i = Math.floor(c / columns * src.length);
             out.push(Math.min(1, (src[i] ?? 0) * level));

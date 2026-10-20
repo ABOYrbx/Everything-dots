@@ -16,6 +16,7 @@ Scope {
     readonly property var pages: [
         { id: "appearance", label: "Appearance", icon: "palette" },
         { id: "pill", label: "Pill", icon: "capture" },
+        { id: "agents", label: "Agents", icon: "smart_toy" },
         { id: "widgets", label: "Widgets", icon: "widgets" },
         { id: "wallhaven", label: "Wallhaven", icon: "travel_explore" },
         { id: "windows", label: "Windows", icon: "select_window" },
@@ -27,6 +28,7 @@ Scope {
         { id: "weather", label: "Weather", icon: "partly_cloudy_day" },
         { id: "notifications", label: "Notifications", icon: "notifications" },
         { id: "keybinds", label: "Keybinds", icon: "keyboard_command_key" },
+        { id: "dictation", label: "Dictation", icon: "graphic_eq" },
         { id: "about", label: "About", icon: "info" }
     ]
 
@@ -126,7 +128,7 @@ Scope {
                                 width: parent.width
                                 height: 36
                                 radius: Theme.r(height / 2)
-                                color: on ? Theme.fg : (m.containsMouse ? Theme.card : "transparent")
+                                color: on ? Theme.fg : (m.containsMouse ? Theme.card : Qt.alpha(Theme.card, 0))
                                 Behavior on color { ColorAnimation { duration: 150 } }
                                 Row {
                                     x: 16

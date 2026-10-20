@@ -46,7 +46,8 @@ Singleton {
         weatherToggle: "Open the weather", mediaControlsToggle: "Open media controls", wifiToggle: "Open Wi-Fi networks",
         bluetoothToggle: "Open Bluetooth devices", wallpaperSelectorToggle: "Open the wallpaper picker",
         wallpaperSelectorRandom: "Random wallpaper", toggleLightDark: "Switch light / dark mode", sessionToggle: "Open the power menu",
-        settingsToggle: "Open Settings", barToggle: "Hide / show the pill"
+        settingsToggle: "Open Settings", barToggle: "Hide / show the pill",
+        agentsToggle: "Open the OpenCode agents", menuToggle: "Open the island menu"
     })
     function dirName(d) { return ({ l: "left", r: "right", u: "up", d: "down" })[d] ?? d; }
     function appName(id) {
@@ -61,9 +62,9 @@ Singleton {
         switch (b.dsp) {
         case "exec_cmd": {
             const cmd = String(a0 ?? "");
-            if (cmd.includes("launcher.sh apps")) return "Open the launcher (vicinae, or the pill launcher)";
-            if (cmd.includes("launcher.sh clipboard")) return "Clipboard history (vicinae, or fuzzel)";
-            if (cmd.includes("launcher.sh emoji")) return "Emoji picker (vicinae, or fuzzel)";
+            if (cmd.includes("launcher.sh apps")) return "Open the pill launcher";
+            if (cmd.includes("launcher.sh clipboard")) return "Clipboard history (fuzzel)";
+            if (cmd.includes("launcher.sh emoji")) return "Emoji picker (fuzzel)";
             if (cmd.includes("toggle launcher")) return "Open the app launcher (fuzzel if the shell isn't running)";
             const m = /^gtk-launch\s+(\S+)/.exec(cmd);
             if (m) return "Open " + appName(m[1]);
@@ -134,7 +135,9 @@ Singleton {
             { label: "Light / dark", lua: 'hl.dsp.global("quickshell:toggleLightDark")' },
             { label: "Power menu", lua: 'hl.dsp.global("quickshell:sessionToggle")' },
             { label: "Settings", lua: 'hl.dsp.global("quickshell:settingsToggle")' },
-            { label: "Hide pill", lua: 'hl.dsp.global("quickshell:barToggle")' }
+            { label: "Hide pill", lua: 'hl.dsp.global("quickshell:barToggle")' },
+            { label: "OpenCode agents", lua: 'hl.dsp.global("quickshell:agentsToggle")' },
+            { label: "Island menu", lua: 'hl.dsp.global("quickshell:menuToggle")' }
         ],
         window: [
             { label: "Close", lua: "hl.dsp.window.close()" },
@@ -209,7 +212,12 @@ Singleton {
     // --- Key capture: an empty Hyprland submap so no bind fires meanwhile.
     function startCapture() {
         capturing = true;
-        Hyprland.dispatch('hl.dsp.submap("nothing-capture")');
+        // The submap is not always registered (it lives in the keybind log
+        // module), and a failed dispatch must not skip the timeout restart -
+        // a stale timer would otherwise cut the next capture short.
+        try {
+            Hyprland.dispatch('hl.dsp.submap("nothing-capture")');
+        } catch (e) {}
         captureTimeout.restart();
     }
     function stopCapture() {
@@ -217,7 +225,9 @@ Singleton {
             return;
         capturing = false;
         captureTimeout.stop();
-        Hyprland.dispatch('hl.dsp.submap("reset")');
+        try {
+            Hyprland.dispatch('hl.dsp.submap("reset")');
+        } catch (e) {}
     }
     Timer {
         id: captureTimeout

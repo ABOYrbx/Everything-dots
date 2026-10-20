@@ -26,6 +26,29 @@ Page {
     }
 
     Section {
+        title: "Menu"
+        CSwitch {
+            label: "Menu on click"
+            sub: "Clicking the empty area of the pill opens all functions"
+            path: "menu.click"
+        }
+        CSwitch {
+            label: "Menu on hover"
+            sub: "The pill opens the menu when the pointer rests on it briefly"
+            path: "menu.hover"
+        }
+        CSlider {
+            label: "Delay"
+            sub: "How long the pointer must stay still"
+            path: "menu.hoverDelay"
+            from: 200
+            to: 1500
+            step: 50
+            suffix: " ms"
+        }
+    }
+
+    Section {
         title: "Behaviour"
         OptSwitch {
             label: "Show the pill"

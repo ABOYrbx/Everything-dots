@@ -6,7 +6,7 @@ import Quickshell.Hyprland
 import qs.services
 import qs.components
 
-// Keybind cheat sheet (Super + /). Reads the live binds recorded by
+// Keybind cheat sheet (Super + -). Reads the live binds recorded by
 // hypr/hyprland/lib/bindlog.lua, so edits made in Settings show up here.
 Scope {
     id: root

@@ -39,7 +39,7 @@ PanelWindow {
     Rectangle {
         id: canvas
         anchors.fill: parent
-        color: win.arranging ? Qt.alpha(Theme.bg, 0.35) : "transparent"
+        color: win.arranging ? Qt.alpha(Theme.bg, 0.35) : Qt.alpha(Theme.bg, 0)
         Behavior on color { ColorAnimation { duration: 250 } }
 
         Slot { id: clock; name: "clock"; ClockWidget {} }
@@ -108,7 +108,7 @@ PanelWindow {
             anchors.fill: parent
             anchors.margins: -10
             radius: Theme.r(Theme.radius + 10) // concentric with the widget
-            color: drag.active ? Qt.alpha(Theme.accent, 0.08) : "transparent"
+            color: drag.active ? Qt.alpha(Theme.accent, 0.08) : Qt.alpha(Theme.accent, 0)
             border.width: 1.5
             border.color: drag.active ? Theme.accent : Qt.alpha(Theme.fg, 0.4)
         }

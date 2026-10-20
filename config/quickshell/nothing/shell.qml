@@ -36,7 +36,7 @@ ShellRoot {
     Onboarding {}
 
     // Instantiate services that must run from startup.
-    Component.onCompleted: [Notifs, Agent, Audio, Brightness, Forecast, Toggles, Net]
+    Component.onCompleted: [Notifs, Agent, Audio, Brightness, Forecast, Toggles, Net, OpenCode]
 
     IpcHandler {
         target: "shell"
@@ -66,5 +66,7 @@ ShellRoot {
     GlobalShortcut { name: "weatherToggle"; onPressed: Ui.toggle("weather") }
     GlobalShortcut { name: "wifiToggle"; onPressed: Ui.toggle("wifi") }
     GlobalShortcut { name: "bluetoothToggle"; onPressed: Ui.toggle("bluetooth") }
+    GlobalShortcut { name: "agentsToggle"; onPressed: Ui.toggle("agents") }
+    GlobalShortcut { name: "menuToggle"; onPressed: Ui.toggle("menu") }
     GlobalShortcut { name: "barToggle"; onPressed: Ui.barVisible = !Ui.barVisible }
 }
