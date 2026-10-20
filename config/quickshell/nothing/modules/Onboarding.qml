@@ -363,6 +363,18 @@ Scope {
                         // The shortcut as separate key chips: "CTRL+SPACE".
                         readonly property var chips: (DictationConfig.primary ?? "")
                             .split("+").filter(s => s !== "")
+                        // What is missing, if anything.
+                        readonly property string status: {
+                            if (!DictationConfig.installed)
+                                return "hyprwhspr is not installed. Install it with: yay -S hyprwhspr";
+                            if (!DictationConfig.setUp)
+                                return "hyprwhspr still needs its setup. Run 'hyprwhspr setup' once to add your API key";
+                            if (!DictationConfig.running)
+                                return "hyprwhspr is installed, but not running. Start it with: systemctl --user enable --now hyprwhspr";
+                            return "hyprwhspr is running";
+                        }
+                        readonly property bool ok: DictationConfig.installed
+                            && DictationConfig.setUp && DictationConfig.running
 
                         Component.onCompleted: if (win.step === index) DictationConfig.check()
                         onVisibleChanged: if (visible) DictationConfig.check()
@@ -386,16 +398,14 @@ Scope {
                                     width: 7 * win.s
                                     height: 7 * win.s
                                     radius: Theme.r(3.5 * win.s)
-                                    color: DictationConfig.running ? Theme.accent : Theme.faint
+                                    color: dictPage.ok ? Theme.accent : Theme.faint
                                 }
                                 Label {
                                     id: stText
                                     anchors.left: stDot.right
                                     anchors.leftMargin: 9 * win.s
                                     anchors.right: parent.right
-                                    text: DictationConfig.running
-                                        ? "hyprwhspr is running"
-                                        : "hyprwhspr is installed, but not running. Start it with: systemctl --user enable --now hyprwhspr"
+                                    text: dictPage.status
                                     font.pixelSize: 12 * win.s
                                     color: Theme.dim
                                     wrapMode: Text.Wrap
@@ -403,9 +413,11 @@ Scope {
                             }
                             Caption {
                                 visible: !DictationConfig.installed
-                                text: "hyprwhspr is not installed. Install it with: yay -S hyprwhspr"
+                                text: dictPage.status
                                 color: Theme.error
                                 font.pixelSize: 12 * win.s
+                                wrapMode: Text.Wrap
+                                width: parent.width
                             }
 
                             // The shortcut that starts it

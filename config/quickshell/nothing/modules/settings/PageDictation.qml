@@ -84,6 +84,12 @@ Page {
                 spacing: 10
 
                 OptButton {
+                    text: "Run setup"
+                    icon: "settings_suggest"
+                    onClicked: Quickshell.execDetached(["kitty", "-1", "--instance-group", "nothing", "--", "hyprwhspr", "setup"])
+                }
+
+                OptButton {
                     text: "Restart"
                     icon: "restart_alt"
                     onClicked: DictationConfig.restart()
@@ -104,6 +110,20 @@ Page {
             text: DictationConfig.restarting
                 ? "Saved. hyprwhspr is restarting — the new hotkey works in a few seconds."
                 : "Saved. Config: ~/.config/hyprwhspr/config.json"
+        }
+
+        // What is still missing, if anything.
+        Caption {
+            width: parent.width
+            wrapMode: Text.Wrap
+            color: DictationConfig.installed && DictationConfig.setUp ? Theme.dim : Theme.error
+            text: !DictationConfig.installed
+                ? "hyprwhspr is not installed. Install it with: yay -S hyprwhspr"
+                : !DictationConfig.setUp
+                    ? "hyprwhspr still needs its setup. 'Run setup' adds the API key and the model."
+                    : !DictationConfig.running
+                        ? "hyprwhspr is installed, but not running. Start it with: systemctl --user enable --now hyprwhspr"
+                        : "hyprwhspr is running."
         }
     }
 }

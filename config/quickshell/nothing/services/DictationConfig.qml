@@ -21,6 +21,8 @@ Singleton {
     // Is hyprwhspr on the system at all? The launcher script is small, so a
     // FileView is enough to find out.
     property bool installed: false
+    // Has hyprwhspr been through its own setup? That writes the credentials.
+    property bool setUp: false
     // Is the dictation service running right now? The island only ever shows
     // a recording when it is.
     property bool running: false
@@ -153,6 +155,16 @@ Singleton {
         printErrors: false
         onLoaded: root.installed = true
         onLoadFailed: root.installed = false
+    }
+
+    // The credentials hyprwhspr's own setup writes.
+    FileView {
+        id: credentials
+        path: (Quickshell.env("XDG_DATA_HOME") || Quickshell.env("HOME") + "/.local/share")
+            + "/hyprwhspr/credentials"
+        printErrors: false
+        onLoaded: root.setUp = text().trim() !== ""
+        onLoadFailed: root.setUp = false
     }
 
     // Is the user service up?

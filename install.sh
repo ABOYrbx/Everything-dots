@@ -226,6 +226,65 @@ wallpaper() {
     fi
 }
 
+# ---------------------------------------------------------------- dictation
+# hyprwhspr types what you say into the focused window, and the island
+# shows the recording. Three things are needed for that:
+#   - a config that fits the desktop (the island is the indicator, so the
+#     separate OSD window stays off)
+#   - the user-space patch, so the island gets the real input level
+#   - the user service, enabled and started
+# The API key and the model come from hyprwhspr's own setup.
+setup_dictation() {
+    command -v hyprwhspr >/dev/null 2>&1 || {
+        note "hyprwhspr is not installed - the island will not show dictation"
+        return 0
+    }
+
+    # A config that fits the desktop. An existing one is left alone.
+    local cfg="$HOME/.config/hyprwhspr/config.json"
+    if [[ ! -f "$cfg" ]]; then
+        mkdir -p "$(dirname "$cfg")"
+        cat >"$cfg" <<'JSON'
+{
+    "primary_shortcut": "CTRL+SPACE",
+    "recording_mode": "auto",
+    "language": "en",
+    "mic_osd_enabled": false,
+    "grab_keys": false
+}
+JSON
+        note "wrote a dictation config: ~/.config/hyprwhspr/config.json"
+    fi
+
+    # The patch, kept out of /usr/lib so package updates cannot overwrite it.
+    local patches="$HOME/.local/share/hyprwhspr/patches"
+    if [[ -f "$DOTS/config/hyprwhspr/patches/sitecustomize.py" ]]; then
+        mkdir -p "$patches"
+        install -m 644 "$DOTS/config/hyprwhspr/patches/sitecustomize.py" "$patches/sitecustomize.py"
+        local unit="$HOME/.config/systemd/user/hyprwhspr.service.d"
+        mkdir -p "$unit"
+        cat >"$unit/10-user-patches.conf" <<EOF
+[Service]
+# User-space patches: the island's dot-matrix level, the state channel and
+# the default recording mode. Kept out of /usr/lib so package updates
+# cannot overwrite them. See $patches/sitecustomize.py
+Environment=PYTHONPATH=$patches
+EOF
+        systemctl --user daemon-reload >/dev/null 2>&1 || true
+        note "dictation patch installed: $patches/sitecustomize.py"
+    fi
+
+    # The service. It is only started when hyprwhspr has been set up, so it
+    # does not fail on a fresh machine that has no API key yet.
+    systemctl --user enable hyprwhspr.service >/dev/null 2>&1 || true
+    if [[ -s "$HOME/.local/share/hyprwhspr/credentials" ]]; then
+        systemctl --user restart hyprwhspr.service >/dev/null 2>&1 || true
+        note "dictation is running (hyprwhspr)"
+    else
+        note "dictation needs one setup step: run 'hyprwhspr setup' to add your API key"
+    fi
+}
+
 first_run() {
     say "Generating theme"
     local shell="$HOME/.config/quickshell/nothing"
@@ -280,6 +339,7 @@ printf '\n  %sEverything-dots%s — Hyprland + the nothing shell\n\n' "$c_b" "$c
 install_fonts
 link_configs
 enable_services
+setup_dictation
 wallpaper
 first_run
 [[ $NO_UPDATE == 1 ]] || autoupdate
