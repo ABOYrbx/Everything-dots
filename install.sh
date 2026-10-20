@@ -26,7 +26,7 @@ DOTS="${EVERYTHING_DOTS:-$HOME/Everything-dots}"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 BACKUP="$HOME/.config/everything-dots-backup/$STAMP"
 
-YES=0 LINK_ONLY=0 NO_PKGS=0 NO_UPDATE=0 QUIET=0
+YES=0 LINK_ONLY=0 NO_PKGS=0 NO_UPDATE=1 QUIET=0
 for a in "$@"; do
     case "$a" in
         --yes|-y) YES=1 ;;
@@ -289,7 +289,7 @@ cat <<EOF
   ${c_b}Done.${c_off}
   Log into the Hyprland session (or run ${c_b}hyprctl reload${c_off} if you're in it).
   Tap Super for the launcher, Super+I for Settings, Super+Print to capture.
-  Your dots live in ${DOTS/#$HOME/~} and update themselves.
+  Your dots live in ${DOTS/#$HOME/~}.
   Other desktops (Plasma, niri, ...) are untouched - pick Hyprland at login.
 
 EOF
