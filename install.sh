@@ -32,6 +32,7 @@ for a in "$@"; do
         --yes|-y) YES=1 ;;
         --link-only) LINK_ONLY=1 ;;
         --no-packages) NO_PKGS=1 ;;
+        --autoupdate) NO_UPDATE=0 ;;
         --no-autoupdate) NO_UPDATE=1 ;;
         --quiet|-q) QUIET=1 ;;
         -h|--help) sed -n '2,23p' "$0"; exit 0 ;;
@@ -84,6 +85,7 @@ REPO_PKGS=(
 FLEX_PKGS=(
     "quickshell|quickshell-git"
     "matugen|matugen-bin"
+    "hyprwhspr|hyprwhspr"
     "ttf-material-symbols-variable|ttf-material-symbols-variable-git"
     "bibata-cursor-theme|bibata-cursor-theme-bin"
 )

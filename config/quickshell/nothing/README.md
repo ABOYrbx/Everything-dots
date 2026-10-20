@@ -52,7 +52,7 @@ click on a chip still hits the chip - the delay is in Settings > Pill.
 ## Welcome tour and cheat sheet
 
 The first time the shell starts it shows a short tour (wallpaper, look,
-colour, weather, keys). It's stored in `~/.local/state/nothing/onboarded`;
+colour, weather, keys, dictation). It's stored in `~/.local/state/nothing/onboarded`;
 reopen it from Settings > About or with `qs -c nothing ipc call onboarding open`.
 `Super + -` (or `ipc call cheatsheet toggle`) shows every bind, grouped and
 searchable, read live from Hyprland.
@@ -145,7 +145,8 @@ shell.qml             entry: layers, IPC, global shortcuts
 services/             Theme (palette), Appearance (wallpaper state), Ui, Audio,
                       Brightness, Player, Notifs, Agent (polkit), Forecast
                       (weather), Net (Wi-Fi/Bluetooth), Toggles, Config,
-                      OpenCode (agent sessions), Dictation
+                      OpenCode (agent sessions), Dictation (hyprwhspr state),
+                      DictationConfig (hyprwhspr config), Dates (English dates)
 components/           DotMatrix/DotText/DotIcon (dot-matrix type + weather
                       glyphs), Tray, Tile, MenuTile, Switch, Card, Track, ...
 modules/Bar.qml       the island + view switching

@@ -159,9 +159,8 @@ Singleton {
     Process {
         id: probe
         command: ["systemctl", "--user", "is-active", "hyprwhspr.service"]
-        stdout: Process.SplitByLines
-        onExited: (exitCode, exitStatus) => {
-            root.running = exitCode === 0;
+        onExited: code => {
+            root.running = code === 0;
             root.checked = true;
         }
     }

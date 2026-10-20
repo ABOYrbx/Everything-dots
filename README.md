@@ -91,6 +91,7 @@ The pill also holds:
 - **Menu:** rest the pointer on the pill and every function shows up in one grid - clock, weather, now playing, apps, Wi-Fi, Bluetooth, wallpaper, capture, OpenCode agents, quick settings, power, settings - each tile with its live value. Clicking a tile opens it. `Super+H` opens it too.
 - **Media:** tinted by the cover art, with a live dot-matrix waveform and a seekable dot progress bar.
 - **Networks:** Wi-Fi and Bluetooth, with tray menus inside the pill.
+- **Dictation:** [hyprwhspr](https://github.com/goodroot/hyprwhspr) types what you say into the focused window. While it records, the pill grows into a taller capsule with a dot-matrix level meter, so the shell is the only indicator. The shortcut, the mode and the language live in Settings › Dictation, and the first-run setup walks through them.
 - **OpenCode agents:** a small pill next to the island with the live OpenCode sessions - how many agents run, how many tokens they used, how long. A small OpenCode plugin feeds the shell; `Super+G` opens the list.
 - **The rest:** polkit password prompts, notifications, and volume and brightness popups.
 
@@ -151,6 +152,7 @@ dots chase while charging), system meters and a sticky note. All of them can be 
 | `Ctrl + Super + T` | wallpapers |
 | `Super + L` | lock |
 | `Ctrl + Alt + Delete` | power menu |
+| `Ctrl + Space` | dictation (hyprwhspr, change it in Settings › Dictation) |
 
 ## Layout
 

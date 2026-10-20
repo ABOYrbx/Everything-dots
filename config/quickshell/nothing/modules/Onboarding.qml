@@ -21,6 +21,9 @@ Scope {
     }
     property bool open: flag.text().trim() === ""
 
+    // Ask hyprwhspr whether it is up, so the dictation step can say so.
+    Component.onCompleted: DictationConfig.check()
+
     function finish() {
         flag.setText("1\n");
         open = false;
@@ -45,7 +48,7 @@ Scope {
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
             color: "transparent"
 
-            property int step: 6
+            property int step: 0
             readonly property var steps: ["Welcome", "Wallpaper", "Look", "Colour", "Weather", "Keys", "Dictation", "Done"]
             readonly property real s: Math.max(0.6, Math.min(width / 1920, height / 1080))
 
@@ -355,11 +358,13 @@ Scope {
 
                     // 6 Dictation
                     Pg {
+                        id: dictPage
                         index: 6
                         // The shortcut as separate key chips: "CTRL+SPACE".
                         readonly property var chips: (DictationConfig.primary ?? "")
                             .split("+").filter(s => s !== "")
 
+                        Component.onCompleted: if (win.step === index) DictationConfig.check()
                         onVisibleChanged: if (visible) DictationConfig.check()
 
                         Column {
@@ -370,23 +375,30 @@ Scope {
                             Body { text: "hyprwhspr listens and types into the window that has the focus. While it records, the pill grows into a dot-matrix level meter." }
 
                             // Is it there at all?
-                            Row {
-                                spacing: 9 * win.s
+                            Item {
+                                width: parent.width
+                                height: stText.implicitHeight
                                 visible: DictationConfig.installed
                                 Rectangle {
-                                    anchors.verticalCenter: parent.verticalCenter
+                                    id: stDot
+                                    x: 0
+                                    y: (stText.height - height) / 2
                                     width: 7 * win.s
                                     height: 7 * win.s
                                     radius: Theme.r(3.5 * win.s)
                                     color: DictationConfig.running ? Theme.accent : Theme.faint
                                 }
                                 Label {
-                                    anchors.verticalCenter: parent.verticalCenter
+                                    id: stText
+                                    anchors.left: stDot.right
+                                    anchors.leftMargin: 9 * win.s
+                                    anchors.right: parent.right
                                     text: DictationConfig.running
                                         ? "hyprwhspr is running"
-                                        : "hyprwhspr is installed, but not running"
+                                        : "hyprwhspr is installed, but not running. Start it with: systemctl --user enable --now hyprwhspr"
                                     font.pixelSize: 12 * win.s
                                     color: Theme.dim
+                                    wrapMode: Text.Wrap
                                 }
                             }
                             Caption {
@@ -406,16 +418,16 @@ Scope {
                                     color: Theme.dim
                                 }
                                 Repeater {
-                                    model: chips
+                                    model: dictPage.chips
                                     Rectangle {
                                         required property string modelData
-                                        width: kc.implicitWidth + 16 * win.s
+                                        width: kcd.implicitWidth + 16 * win.s
                                         height: 30 * win.s
                                         radius: Theme.r(8 * win.s)
                                         color: Theme.raised
                                         border.width: 1
                                         border.color: Theme.faint
-                                        Caption { id: kc; anchors.centerIn: parent; text: parent.modelData; color: Theme.fg; font.pixelSize: 11 * win.s }
+                                        Caption { id: kcd; anchors.centerIn: parent; text: parent.modelData; color: Theme.fg; font.pixelSize: 11 * win.s }
                                     }
                                 }
                             }
