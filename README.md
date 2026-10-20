@@ -160,6 +160,7 @@ dots chase while charging), system meters and a sticky note. All of them can be 
 config/hypr/                 Hyprland (Lua config)
 config/quickshell/nothing/   the shell. Its README covers files, IPC and options
 config/opencode/plugins/     OpenCode plugin: live session state for the pill
+config/hyprwhspr/            user-space patch: the island's dictation level
 install.sh  update.sh        installer and auto-updater
 assets/                      screenshots
 ```
