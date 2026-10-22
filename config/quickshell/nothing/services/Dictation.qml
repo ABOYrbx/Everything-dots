@@ -73,7 +73,16 @@ Singleton {
         printErrors: false
         onFileChanged: reload()
         onLoaded: {
-            root.state = text().trim();
+            const s = text().trim();
+            // Only take known states - a half-written file must not reset
+            // the island.
+            if (s !== "recording" && s !== "processing" && s !== "success" && s !== "error")
+                return;
+            // The same state again (the poller reads it over and over) must
+            // not restart the timers below.
+            if (s === root.state)
+                return;
+            root.state = s;
             if (root.state === "success") {
                 // The text is in - the island just goes back to rest.
                 root.state = "";
@@ -116,6 +125,21 @@ Singleton {
             root.frameMax = m;
         }
         onLoadFailed: root.buckets = []
+    }
+
+    // The watcher only arms on files that exist when the view is created, and
+    // hyprwhspr creates and deletes them per recording. So the state is
+    // polled as well - the watcher just makes it react a tick earlier.
+    Timer {
+        interval: 100
+        running: true
+        repeat: true
+        onTriggered: {
+            status.reload();
+            stateFile.reload();
+            bucketsFile.reload();
+            levelFile.reload();
+        }
     }
 
     // Fallback for when the bucket file is not there: the scalar level.
